@@ -3,4 +3,13 @@ project(AVOW)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(AVOW src/main.cpp src/algorithms/Algorithm.hpp)
+include_directories(
+        src
+        src/utils
+        src/algorithms
+)
+
+add_executable(AVOW
+        src/main.cpp
+        src/algorithms/Algorithm.hpp
+        src/utils/cxxopts.hpp)
