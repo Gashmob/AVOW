@@ -9,7 +9,9 @@ include_directories(
         src/algorithms
 )
 
-add_executable(AVOW
+add_executable(avow
         src/main.cpp
+        src/VERSION.h
         src/algorithms/Algorithm.hpp
+        src/algorithms/algorithms.hpp
         src/utils/cxxopts.hpp)
