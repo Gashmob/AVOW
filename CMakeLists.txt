@@ -3,4 +3,4 @@ project(AVOW)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(AVOW main.cpp)
+add_executable(AVOW src/main.cpp)
