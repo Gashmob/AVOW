@@ -1,5 +1,7 @@
 # Another View Of World
 
+Have used `figlet -f slant "AVOW"` for the version message.
+
 ## What is this?
 
 This is just a simple project of image treatment.
