@@ -17,4 +17,5 @@ add_executable(avow
         src/utils/cxxopts.hpp
         src/utils/stb_image.h src/utils/stb_image_write.h
         src/utils/Image.hpp
-        src/utils/tools.hpp)
+        src/utils/tools.hpp
+        src/algorithms/blank/Blank.hpp)

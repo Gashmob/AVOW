@@ -10,6 +10,7 @@
 #include <string>
 #include <cstring>
 #include <stdexcept>
+#include <functional>
 
 #include "tools.hpp"
 
@@ -33,6 +34,10 @@ public:
      * @throws runtime_error if the file cannot be opened or doesn't exists.
      */
     explicit Image(const std::string &path) {
+        // Pre-initialize to avoid warning
+        _width = _height = 0;
+        _channels = 1;
+
         if (!tools::fileExists(path))
             throw std::runtime_error("File does not exist: " + path);
 
@@ -50,15 +55,13 @@ public:
      * @param channels Number of channels, 1 = grayscale, 2 = grayscale + alpha, 3 = RGB, 4 = RGBA
      * @param generator Generator function (x, y, channels) -> value, default generator set to white image
      */
-    Image(int width, int height, int channels, uint8_t *(generator)(int, int, int) = _default_generator)
+    Image(int width, int height, int channels, uint8_t *(*generator)(int, int, int) = _default_generator)
             : _width(width), _height(height), _channels(channels) {
         _data = new uint8_t[_width * _height * _channels];
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                _data[x + y * width] = *generator(x, y, channels);
-            }
-        }
+        map([&generator](int x, int y, int c, uint8_t *value) {
+            return generator(x, y, c);
+        });
     }
 
     /**
@@ -169,14 +172,39 @@ public:
         return this;
     }
 
+    /**
+     * Map all the image with func
+     *
+     * @param func The function to apply to each pixel (x, y, channels, data) -> data
+     * @return Self instance
+     */
+    Image *map(const std::function<uint8_t *(int, int, int, uint8_t *)> &func) {
+        for (int x = 0; x < _width; x++) {
+            for (int y = 0; y < _height; y++) {
+                write(x, y, func(x, y, _channels, read(x, y)));
+            }
+        }
+
+        return this;
+    }
+
 private:
     uint8_t *_data;
     int _width, _height, _channels;
 
+    /**
+     * Return a white pixel. Used as default generator.
+     *
+     * @param x
+     * @param y
+     * @param channels
+     * @return
+     */
     static uint8_t *_default_generator(int x, int y, int channels) {
         auto *result = new uint8_t[channels];
         // Set each bit of result to 1 for a white pixel
-        memset(result, 255, channels);
+        for (int i = 0; i < channels; i++)
+            result[i] = 255;
 
         return result;
     }

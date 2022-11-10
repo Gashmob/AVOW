@@ -12,18 +12,17 @@
 #include "Image.hpp"
 
 using namespace std;
+using namespace tools;
 
 int main(int argc, char **argv) {
     cxxopts::Options options("avow", "Another View Of World\nVersion: " + VERSION_STRING + "\nLicense: " + LICENSE);
     options.custom_help("[options...]");
-    options.positional_help("<image input>");
     options.add_options("General")
             ("h,help", "Print help")
             ("v,version", "Print version")
             ("i,input", "Input image", cxxopts::value<string>())
             ("o,output", "Output image (png,jpg,jpeg,bmp,tga,hdr)", cxxopts::value<string>());
     auto ignore_opt = {"help", "version", "input", "output"};
-    options.parse_positional({"input", "output"});
 
     auto adder = options.add_options("Algorithms");
     for (const auto &algorithm: algorithms) {
@@ -36,7 +35,7 @@ int main(int argc, char **argv) {
     try {
         result = options.parse(argc, argv);
     } catch (exception &e) {
-        cout << "\033[1;31mSomething went wrong during parsing options\033[00m" << endl << endl;
+        cout << bold << red << "Something went wrong during parsing options" << reset << endl << endl;
         cout << options.help() << endl;
         return 1;
     }
@@ -55,23 +54,25 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    if (result.count("help") || !result.count("input")) {
+    if (result.count("help") || result.arguments().empty()) {
         cout << options.help() << endl;
         return 0;
     }
 
-    const std::string input = result["input"].as<string>();
+    const std::string input = result.count("input") ? result["input"].as<string>() : "";
     const std::string output = result.count("output") ? result["output"].as<string>() : input + "_out.png";
 
     // ====================
 
-    // Open image
+    // Open image if input
     Image *image = nullptr;
-    try {
-        image = new Image(input);
-    } catch (runtime_error &e) {
-        cout << "\033[1;31m" << e.what() << "\033[00m" << endl;
-        return 1;
+    if (!input.empty()) {
+        try {
+            image = new Image(input);
+        } catch (runtime_error &e) {
+            cout << red << e.what() << reset << endl;
+            return 1;
+        }
     }
 
     // Get list of algorithms to run
@@ -83,27 +84,29 @@ int main(int argc, char **argv) {
 
     // Run algorithms
     if (algos.empty()) {
-        cout << "\033[35mNo algorithm to run\033[00m" << endl;
+        cout << magenta << "No algorithm to run" << reset << endl;
     } else {
         for (const auto &algo: algos) {
             auto opt = algo.key();
             if (algorithms.find(opt) != algorithms.end()) {
                 auto a = algorithms.at(opt);
-                a->run({}); // FIXME : give correct args
+                image = a->run(image, split(algo.value()));
             } else {
-                cout << "\033[1;31mAlgorithm " << opt << " not found!\033[00m" << endl;
+                cout << bold << red << "Algorithm " + opt + " not found" << reset << endl;
             }
         }
     }
 
     // Save image
-    try {
-        image->save(output);
-        delete image;
-    } catch (runtime_error &e) {
-        cout << "\033[1;31m" << e.what() << "\033[00m" << endl;
-        delete image;
-        return 1;
+    if (image) {
+        try {
+            image->save(output);
+            delete image;
+        } catch (runtime_error &e) {
+            cout << bold << red << e.what() << reset << endl;
+            delete image;
+            return 1;
+        }
     }
 
     return 0;
