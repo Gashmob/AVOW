@@ -43,6 +43,25 @@ public:
     }
 
     /**
+     * Create an image from a generator
+     *
+     * @param width Width of image
+     * @param height Height of image
+     * @param channels Number of channels, 1 = grayscale, 2 = grayscale + alpha, 3 = RGB, 4 = RGBA
+     * @param generator Generator function (x, y, channels) -> value, default generator set to white image
+     */
+    Image(int width, int height, int channels, uint8_t *(generator)(int, int, int) = _default_generator)
+            : _width(width), _height(height), _channels(channels) {
+        _data = new uint8_t[_width * _height * _channels];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                _data[x + y * width] = *generator(x, y, channels);
+            }
+        }
+    }
+
+    /**
      * Create a deep copy of other.
      *
      * @param other The image to copy.
@@ -51,7 +70,7 @@ public:
         _width = other._width;
         _height = other._height;
         _channels = other._channels;
-        _data = new unsigned char[_width * _height * _channels];
+        _data = new uint8_t[_width * _height * _channels];
         memcpy(_data, other._data, _width * _height * _channels);
     }
 
@@ -153,6 +172,14 @@ public:
 private:
     uint8_t *_data;
     int _width, _height, _channels;
+
+    static uint8_t *_default_generator(int x, int y, int channels) {
+        auto *result = new uint8_t[channels];
+        // Set each bit of result to 1 for a white pixel
+        memset(result, 255, channels);
+
+        return result;
+    }
 };
 
 
