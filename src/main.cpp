@@ -8,6 +8,7 @@
 #include "cxxopts.hpp"
 #include "VERSION.h"
 #include "algorithms.hpp"
+#include "Image.hpp"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ int main(int argc, char **argv) {
             ("h,help", "Print help")
             ("v,version", "Print version")
             ("i,input", "Input image", cxxopts::value<string>())
-            ("o,output", "Output image", cxxopts::value<string>());
+            ("o,output", "Output image (png,jpg,jpeg,bmp,tga,hdr)", cxxopts::value<string>());
     options.parse_positional({"input", "output"});
 
     auto adder = options.add_options("Algorithms");
@@ -58,15 +59,30 @@ int main(int argc, char **argv) {
     }
 
     const std::string input = result["input"].as<string>();
-    const std::string output = result.count("output") ? result["output"].as<string>() : "out_" + input;
+    const std::string output = result.count("output") ? result["output"].as<string>() : input + "_out.png";
 
     // ====================
 
-    // TODO : open image
+    // Open image
+    Image *image = nullptr;
+    try {
+        image = new Image(input);
+    } catch (runtime_error &e) {
+        cout << "\033[1;31m" << e.what() << "\033[00m" << endl;
+        return 1;
+    }
 
     // TODO : run algorithms
 
-    // TODO : save image
+    // Save image
+    try {
+        image->save(output);
+        delete image;
+    } catch (runtime_error &e) {
+        cout << "\033[1;31m" << e.what() << "\033[00m" << endl;
+        delete image;
+        return 1;
+    }
 
     return 0;
 }

@@ -9,10 +9,17 @@
 
 #include <string>
 #include <cstring>
+#include <stdexcept>
+
+#include "tools.hpp"
+
+#define STB_IMAGE_IMPLEMENTATION
 
 #include "stb_image.h"
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+
 #include "stb_image_write.h"
-#include "tools.hpp"
 
 /**
  * Class representing an image.
@@ -23,10 +30,14 @@ public:
      * Open an image from a file.
      *
      * @param path Path to the image file.
+     * @throws runtime_error if the file cannot be opened or doesn't exists.
      */
     explicit Image(const std::string &path) {
         if (!tools::fileExists(path))
             throw std::runtime_error("File does not exist: " + path);
+
+        if (stbi_info(path.c_str(), &_width, &_height, &_channels) == 0)
+            throw std::runtime_error("Cannot open file: " + path);
 
         _data = stbi_load(path.c_str(), &_width, &_height, &_channels, 0);
     }
@@ -55,9 +66,23 @@ public:
      * Save the image to a file.
      *
      * @param path Path to the output file.
+     * @throws runtime_error if the file format is not supported.
      */
     void save(const std::string &path) {
-        stbi_write_png(path.c_str(), _width, _height, _channels, _data, _width * _channels);
+        std::string ext = tools::getExtension(path);
+
+        if (ext == "png")
+            stbi_write_png(path.c_str(), _width, _height, _channels, _data, _width * _channels);
+        else if (ext == "jpg" || ext == "jpeg")
+            stbi_write_jpg(path.c_str(), _width, _height, _channels, _data, 100);
+        else if (ext == "bmp")
+            stbi_write_bmp(path.c_str(), _width, _height, _channels, _data);
+        else if (ext == "tga")
+            stbi_write_tga(path.c_str(), _width, _height, _channels, _data);
+        else if (ext == "hdr")
+            stbi_write_hdr(path.c_str(), _width, _height, _channels, (float *) _data);
+        else
+            throw std::runtime_error("Unsupported file format: " + ext);
     }
 
     /**
