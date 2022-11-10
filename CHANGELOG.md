@@ -2,6 +2,8 @@
 
 ## 0.2.0
 
+- `Blank` generate a blank image, not white
+
 ## 0.1.0
 
 *2022-11-10*

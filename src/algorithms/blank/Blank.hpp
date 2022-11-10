@@ -12,14 +12,14 @@
 using namespace tools;
 
 /**
- * Generate a white image
+ * Generate a blank image
  */
 class Blank : public Algorithm {
 public:
     Blank() {
         _opt = "b,blank";
         _hasArgs = true;
-        _description = "Generate a white image, args = width,height,channels";
+        _description = "Generate a blank image, args = width,height,channels";
     }
 
     Image *run(Image *image, const std::vector<std::string> &args) override {
@@ -35,7 +35,13 @@ public:
         int height = std::stoi(args[1]);
         int channels = std::stoi(args[2]);
 
-        return new Image(width, height, channels);
+        return new Image(width, height, channels, [](int x, int y, int c) {
+            auto *result = new uint8_t[c];
+            for (int i = 0; i < c; i++)
+                result[i] = 0;
+
+            return result;
+        });
     }
 };
 
