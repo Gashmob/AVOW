@@ -5,6 +5,7 @@
  * -----------------------
  */
 #include <iostream>
+#include <algorithm>
 #include "cxxopts.hpp"
 #include "VERSION.h"
 #include "algorithms.hpp"
@@ -21,11 +22,12 @@ int main(int argc, char **argv) {
             ("v,version", "Print version")
             ("i,input", "Input image", cxxopts::value<string>())
             ("o,output", "Output image (png,jpg,jpeg,bmp,tga,hdr)", cxxopts::value<string>());
+    auto ignore_opt = {"help", "version", "input", "output"};
     options.parse_positional({"input", "output"});
 
     auto adder = options.add_options("Algorithms");
     for (const auto &algorithm: algorithms) {
-        algorithm.getOption(&adder);
+        algorithm.second->getOption(&adder);
     }
 
     // ====================
@@ -72,7 +74,27 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    // TODO : run algorithms
+    // Get list of algorithms to run
+    std::vector<cxxopts::KeyValue> algos;
+    for (const auto &res: result) {
+        if (find(ignore_opt.begin(), ignore_opt.end(), res.key()) == ignore_opt.end()) // If is not a general opt
+            algos.push_back(res);
+    }
+
+    // Run algorithms
+    if (algos.empty()) {
+        cout << "\033[35mNo algorithm to run\033[00m" << endl;
+    } else {
+        for (const auto &algo: algos) {
+            auto opt = algo.key();
+            if (algorithms.find(opt) != algorithms.end()) {
+                auto a = algorithms.at(opt);
+                a->run({}); // FIXME : give correct args
+            } else {
+                cout << "\033[1;31mAlgorithm " << opt << " not found!\033[00m" << endl;
+            }
+        }
+    }
 
     // Save image
     try {
