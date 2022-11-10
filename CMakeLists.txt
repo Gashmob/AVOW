@@ -18,4 +18,4 @@ add_executable(avow
         src/utils/stb_image.h src/utils/stb_image_write.h
         src/utils/Image.hpp
         src/utils/tools.hpp
-        src/algorithms/blank/Blank.hpp)
+        src/algorithms/simple/Blank.hpp src/algorithms/simple/White.hpp)

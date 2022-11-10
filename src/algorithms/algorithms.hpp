@@ -12,7 +12,8 @@
 
 #include "Algorithm.hpp"
 
-#include "blank/Blank.hpp"
+#include "simple/Blank.hpp"
+#include "simple/White.hpp"
 
 /**
  * List of all available algorithms
@@ -21,6 +22,7 @@
  */
 static std::map<std::string, Algorithm *> algorithms = {
         std::make_pair("blank", new Blank()),
+        std::make_pair("white", new White()),
 };
 
 #endif //AVOW_ALGORITHMS_HPP

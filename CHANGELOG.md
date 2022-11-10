@@ -3,6 +3,7 @@
 ## 0.2.0
 
 - `Blank` generate a blank image, not white
+- Add `White` algorithm
 
 ## 0.1.0
 
