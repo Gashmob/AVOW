@@ -14,6 +14,7 @@
 
 #include "simple/Blank.hpp"
 #include "simple/White.hpp"
+#include "simple/Random.hpp"
 
 /**
  * List of all available algorithms
@@ -23,6 +24,7 @@
 static std::map<std::string, Algorithm *> algorithms = {
         std::make_pair("blank", new Blank()),
         std::make_pair("white", new White()),
+        std::make_pair("random", new Random()),
 };
 
 #endif //AVOW_ALGORITHMS_HPP
