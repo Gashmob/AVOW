@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
             ("c,config", "Config file", cxxopts::value<string>())
             ("i,input", "Input image", cxxopts::value<string>())
             ("o,output", "Output image (png,jpg,jpeg,bmp,tga,hdr)", cxxopts::value<string>())
-            ("g,generate", "Generate a new config file", cxxopts::value<string>()->implicit_value("config.json"));
+            ("g,generate", "Generate a new config file", cxxopts::value<string>()->implicit_value("config.json"))
+            ("l,list", "List all available algorithms");
     options.parse_positional({"config"});
 
     // ====================
@@ -60,6 +61,14 @@ int main(int argc, char **argv) {
 
     if (result.count("help") || result.arguments().empty()) {
         cout << options.help() << endl;
+        return 0;
+    }
+
+    if (result.count("list")) {
+        cout << "Available algorithms:" << endl;
+        for (auto &algorithm: algorithms) {
+            cout << " - " << algorithm.first << endl;
+        }
         return 0;
     }
 
