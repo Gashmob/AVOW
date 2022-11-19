@@ -21,6 +21,6 @@ add_executable(avow
         src/utils/Image.hpp
         src/utils/tools.hpp
         src/utils/enquirer.hpp
-        src/algorithms/simple/Blank.hpp src/algorithms/simple/White.hpp src/algorithms/simple/Random.hpp)
+        )
 
 target_link_libraries(avow jsoncpp_lib)

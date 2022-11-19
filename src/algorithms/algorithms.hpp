@@ -12,19 +12,11 @@
 
 #include "Algorithm.hpp"
 
-#include "simple/Blank.hpp"
-#include "simple/White.hpp"
-#include "simple/Random.hpp"
-
 /**
  * List of all available algorithms
  * key   : _opt member of Algorithm
  * value : instance of Algorithm
  */
-static std::map<std::string, Algorithm *> algorithms = {
-        std::make_pair("blank", new Blank()),
-        std::make_pair("white", new White()),
-        std::make_pair("random", new Random()),
-};
+static std::map<std::string, Algorithm *> algorithms = {};
 
 #endif //AVOW_ALGORITHMS_HPP
