@@ -15,7 +15,7 @@ add_executable(avow
         src/utils/Image.hpp
         src/utils/tools.hpp
         src/utils/enquirer.hpp
-        src/algorithm/algos/Blank.hpp src/algorithm/algos/Random.hpp)
+        src/algorithm/algos/Blank.hpp src/algorithm/algos/Random.hpp src/algorithm/algos/Color.hpp)
 
 target_include_directories(avow PUBLIC
         src

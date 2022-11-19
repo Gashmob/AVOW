@@ -14,6 +14,7 @@
 #include "Algorithm.hpp"
 
 #include "Blank.hpp"
+#include "Color.hpp"
 #include "Random.hpp"
 
 /**
@@ -25,6 +26,7 @@
  */
 static std::map<std::string, std::function<Algorithm *()>> algorithms = {
         {"Blank", Blank::build},
+        {"Color", Color::build},
         {"Random", Random::build},
 };
 

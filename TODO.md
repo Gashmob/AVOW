@@ -1,3 +1,3 @@
 # TODO
 
-- Color, Noise, Blend-contour, Scaling, SVG
+- Noise, Blend-contour, Scaling, SVG
