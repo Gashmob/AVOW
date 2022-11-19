@@ -25,3 +25,5 @@ target_include_directories(avow PUBLIC
         )
 
 target_link_libraries(avow jsoncpp_lib)
+
+install(TARGETS avow DESTINATION bin)

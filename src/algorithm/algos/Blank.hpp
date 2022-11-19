@@ -17,7 +17,15 @@ public:
     }
 
     Image *run(Image *image, const Json::Value &config) override {
-        return Algorithm::run(image, config);
+        delete image;
+
+        return new Image(config["width"].asInt(), config["height"].asInt(), 2, [](int x, int y, int c) {
+            auto *result = new uint8_t[c];
+            for (int i = 0; i < c; i++)
+                result[i] = 0;
+
+            return result;
+        });
     }
 
     Json::Value config() override {
@@ -32,6 +40,5 @@ public:
         return config;
     }
 };
-
 
 #endif //AVOW_BLANK_HPP
