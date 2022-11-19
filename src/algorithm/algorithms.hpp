@@ -13,11 +13,17 @@
 
 #include "Algorithm.hpp"
 
+#include "Blank.hpp"
+
 /**
  * List of all available algorithms
  * key   : name of Algorithm
  * value : pointer to build function
+ *
+ * Please sort alphabetically
  */
-static std::map<std::string, std::function<Algorithm *()>> algorithms = {};
+static std::map<std::string, std::function<Algorithm *()>> algorithms = {
+        {"Blank", Blank::build},
+};
 
 #endif //AVOW_ALGORITHMS_HPP
