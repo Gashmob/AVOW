@@ -17,6 +17,8 @@ using namespace enquirer;
 
 void generate_config(const string &file);
 
+int run_config(const string &file, const string &input, const string &output);
+
 int main(int argc, char **argv) {
     cxxopts::Options options("avow", "Another View Of World\nVersion: " + VERSION_STRING + "\nLicense: " + LICENSE);
     options.custom_help("[options...]");
@@ -77,17 +79,11 @@ int main(int argc, char **argv) {
         cout << color::bold << color::red << "Unable to open config file" << color::reset << endl << endl;
         return 1;
     }
-    ifstream config(config_file);
-    Json::Value root;
-    config >> root;
-    config.close();
 
     string input = result.count("input") ? result["input"].as<string>() : "";
     string output = result.count("output") ? result["output"].as<string>() : "";
 
-    // TODO : Run algorithms using config file
-
-    return 0;
+    return run_config(config_file, input, output);
 }
 
 void generate_config(const string &file) {
@@ -121,4 +117,50 @@ void generate_config(const string &file) {
     cout << endl
          << color::green << "Config file " << color::bold << file << color::reset
          << color::green << " generated" << color::reset << endl;
+}
+
+int run_config(const string &config_file, const string &input, const string &output) {
+    Json::Value config;
+    ifstream file(config_file);
+    file >> config;
+    file.close();
+
+    // Generate input
+    Image *img = nullptr;
+    if (config.get("input", !input.empty()).asBool()) {
+        if (input.empty()) {
+            cout << color::bold << color::red << "You must specify an input image" << color::reset << endl;
+            return 1;
+        }
+
+        cout << color::bold << color::cyan << "Loading input image" << color::reset << endl;
+        img = new Image(input);
+    }
+
+    for (int i = 0; i < config["configs"].size(); i++) {
+        string algo = config["algorithms"][i].asString();
+        Json::Value algo_config = config["configs"][i];
+
+        cout << color::bold << color::grey << "Running algorithm " << color::white << algo << color::reset << endl;
+        img = algorithms[algo]()->run(img, algo_config);
+    }
+
+    // Generate output
+    if (config.get("output", !output.empty()).asBool()) {
+        if (output.empty()) {
+            cout << color::bold << color::red << "You must specify an output image" << color::reset << endl;
+            return 1;
+        }
+        if (!img) {
+            cout << color::bold << color::red << "Error : Image is null" << color::reset << endl;
+            return 1;
+        }
+
+        cout << color::bold << color::cyan << "Saving output image" << color::reset << endl;
+        img->save(output);
+    }
+
+    delete img;
+
+    return 0;
 }

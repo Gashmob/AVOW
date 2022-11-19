@@ -23,7 +23,7 @@ public:
      * @param config Configuration for the algorithm from the config file
      * @return The Image treated
      */
-    virtual Image *run(Image &image, const Json::Value &config) { throw; }
+    virtual Image *run(Image *image, const Json::Value &config) { throw; }
 
     /**
      * Method that build an instance of algorithm
