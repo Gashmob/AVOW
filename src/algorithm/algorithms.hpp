@@ -14,6 +14,7 @@
 #include "Algorithm.hpp"
 
 #include "Blank.hpp"
+#include "Random.hpp"
 
 /**
  * List of all available algorithms
@@ -24,6 +25,7 @@
  */
 static std::map<std::string, std::function<Algorithm *()>> algorithms = {
         {"Blank", Blank::build},
+        {"Random", Random::build},
 };
 
 #endif //AVOW_ALGORITHMS_HPP
