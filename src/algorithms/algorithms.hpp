@@ -15,8 +15,8 @@
 
 /**
  * List of all available algorithms
- * key   : _opt member of Algorithm
- * value : instance of Algorithm
+ * key   : name of Algorithm
+ * value : pointer to build function
  */
 static std::map<std::string, std::function<Algorithm *()>> algorithms = {};
 
