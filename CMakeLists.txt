@@ -3,6 +3,8 @@ project(AVOW)
 
 set(CMAKE_CXX_STANDARD 17)
 
+find_package(jsoncpp REQUIRED)
+
 include_directories(
         src
         src/utils
@@ -20,3 +22,5 @@ add_executable(avow
         src/utils/tools.hpp
         src/utils/enquirer.hpp
         src/algorithms/simple/Blank.hpp src/algorithms/simple/White.hpp src/algorithms/simple/Random.hpp)
+
+target_link_libraries(avow jsoncpp_lib)
