@@ -4,6 +4,8 @@
 
 - `Blank` generate a blank image, not white
 - Add `White` and `Random` algorithm
+- Executable use a config file instead of command line arguments
+- The config file can be generated with `-g [file]`
 
 ## 0.1.0
 
