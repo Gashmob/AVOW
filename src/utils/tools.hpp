@@ -37,23 +37,21 @@ namespace tools {
         return path.substr(path.find_last_of('.') + 1);
     }
 
-    std::vector<std::string> split(const std::string &src, const char delim = ',') {
-        std::vector<std::string> res;
+    /**
+     * Returns keys of the map
+     *
+     * @tparam K Type of the key
+     * @tparam V Type of the value
+     * @param input Map to get keys
+     * @return Keys of the map
+     */
+    template<typename K, typename V>
+    std::vector<K> keys(const std::map<K, V> &input) {
+        std::vector<K> keys;
+        for (auto &it: input)
+            keys.push_back(it.first);
 
-        std::string current;
-        for (const auto c: src) {
-            if (c == delim) {
-                res.push_back(current);
-                current = "";
-            } else {
-                current += c;
-            }
-        }
-
-        if (!current.empty())
-            res.push_back(current);
-
-        return res;
+        return keys;
     }
 }
 

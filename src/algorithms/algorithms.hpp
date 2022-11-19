@@ -9,6 +9,7 @@
 
 #include <map>
 #include <string>
+#include <functional>
 
 #include "Algorithm.hpp"
 
@@ -17,6 +18,6 @@
  * key   : _opt member of Algorithm
  * value : instance of Algorithm
  */
-static std::map<std::string, Algorithm *> algorithms = {};
+static std::map<std::string, std::function<Algorithm *()>> algorithms = {};
 
 #endif //AVOW_ALGORITHMS_HPP

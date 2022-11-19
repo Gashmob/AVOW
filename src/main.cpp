@@ -6,13 +6,16 @@
  */
 #include <iostream>
 #include <json/json.h>
-#include <fstream>
 #include "cxxopts.hpp"
 #include "VERSION.h"
 #include "enquirer.hpp"
+#include "algorithms.hpp"
+#include "tools.hpp"
 
 using namespace std;
 using namespace enquirer;
+
+void generate_config(const string &file);
 
 int main(int argc, char **argv) {
     cxxopts::Options options("avow", "Another View Of World\nVersion: " + VERSION_STRING + "\nLicense: " + LICENSE);
@@ -60,7 +63,7 @@ int main(int argc, char **argv) {
 
     if (result.count("generate")) {
         string config = result["generate"].as<string>();
-        // TODO : generate a new config file using Enquirer
+        generate_config(config);
         return 0;
     }
 
@@ -70,13 +73,14 @@ int main(int argc, char **argv) {
         return 1;
     }
     string config_file = result["config"].as<string>();
-    ifstream config(config_file);
-    if (!config.is_open()) {
+    if (!tools::fileExists(config_file)) {
         cout << color::bold << color::red << "Unable to open config file" << color::reset << endl << endl;
         return 1;
     }
+    ifstream config(config_file);
     Json::Value root;
     config >> root;
+    config.close();
 
     string input = result.count("input") ? result["input"].as<string>() : "";
     string output = result.count("output") ? result["output"].as<string>() : "";
@@ -84,4 +88,37 @@ int main(int argc, char **argv) {
     // TODO : Run algorithms using config file
 
     return 0;
+}
+
+void generate_config(const string &file) {
+    cout << color::bold << color::magenta << "Let's build a new config file" << color::reset << endl << endl;
+
+    bool input = confirm("Did you need an input image?", true);
+
+    vector<Json::Value> configs;
+    vector<string> names;
+    vector<string> algo_names = tools::keys(algorithms);
+    do {
+        string algo = select("Which algorithm do you want to use?", algo_names);
+        configs.emplace_back(algorithms[algo]()->config());
+        names.emplace_back(algo);
+    } while (confirm("Add another algorithm?", false));
+
+    bool output = confirm("Did you have an output image?", true);
+
+    Json::Value root;
+    root["input"] = input;
+    root["output"] = output;
+    for (int i = 0; i < configs.size(); i++) {
+        root["configs"][i] = configs[i];
+        root["algorithms"][i] = names[i];
+    }
+
+    ofstream config(file);
+    config << root;
+    config.close();
+
+    cout << endl
+         << color::green << "Config file " << color::bold << file << color::reset
+         << color::green << " generated" << color::reset << endl;
 }

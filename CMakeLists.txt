@@ -5,12 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package(jsoncpp REQUIRED)
 
-include_directories(
-        src
-        src/utils
-        src/algorithms
-)
-
 add_executable(avow
         src/main.cpp
         src/VERSION.h
@@ -21,6 +15,12 @@ add_executable(avow
         src/utils/Image.hpp
         src/utils/tools.hpp
         src/utils/enquirer.hpp
+        )
+
+target_include_directories(avow PUBLIC
+        src
+        src/utils
+        src/algorithms
         )
 
 target_link_libraries(avow jsoncpp_lib)

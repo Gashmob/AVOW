@@ -8,7 +8,7 @@
 #define AVOW_ALGORITHM_HPP
 
 #include <string>
-#include "cxxopts.hpp"
+#include <json/json.h>
 #include "Image.hpp"
 
 /**
@@ -18,34 +18,29 @@ class Algorithm {
 public:
     /**
      * Main method that take an image as input and return a new image.
+     *
      * @param image Image to treat
-     * @param args Arguments passed by command line, they will be interpreted has a comma separated list.
+     * @param config Configuration for the algorithm from the config file
+     * @return The Image treated
      */
-    virtual Image *run(Image *image, const std::vector<std::string> &args) { throw; }
+    virtual Image *run(Image &image, const Json::Value &config) { throw; }
 
-    virtual void getOption(cxxopts::OptionAdder *adder) const final {
-        if (_hasArgs)
-            (*adder)(this->_opt, this->_description, cxxopts::value<std::vector<std::string>>());
-        else
-            (*adder)(this->_opt, this->_description);
-    }
+    /**
+     * Method that build an instance of algorithm
+     *
+     * @return An instance of the algorithm ready to run
+     */
+    static Algorithm *build() { throw; }
+
+    /**
+     * Method that return the config of the algorithm.
+     * Can use Enquirer to ask user for input.
+     *
+     * @return
+     */
+    virtual Json::Value config() { throw; }
 
 protected:
-    /**
-     * Arg to pass to the command line to use this algorithm.
-     * Format : o,opt for -o --opt
-     */
-    std::string _opt = "<opt>";
-    /**
-     * If the algorithm need arguments, they are passed in the command line.
-     * Arguments
-     */
-    bool _hasArgs = false;
-    /**
-     * Description of the algorithm.
-     */
-    std::string _description = "<algorithm description>";
-
     Algorithm() = default; // Private constructor to prevent instantiation
 };
 
