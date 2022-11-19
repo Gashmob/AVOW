@@ -31,7 +31,15 @@ public:
     }
 
     Json::Value config() override {
-        return Algorithm::config();
+        Json::Value config;
+
+        int width = enquirer::number<int>("Width of the image");
+        int height = enquirer::number<int>("Height of the image");
+
+        config["width"] = width;
+        config["height"] = height;
+
+        return config;
     }
 };
 
