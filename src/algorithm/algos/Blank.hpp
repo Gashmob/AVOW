@@ -39,6 +39,13 @@ public:
 
         return config;
     }
+
+    void describe() override {
+        std::cout << "Generates a blank (transparent) image." << std::endl
+                  << "The configuration needs the width and height of the image." << std::endl
+                  << "Warning : the image is transparent, so it need to be saved in a format that supports transparency. Else your image will be black"
+                  << std::endl;
+    }
 };
 
 #endif //AVOW_BLANK_HPP

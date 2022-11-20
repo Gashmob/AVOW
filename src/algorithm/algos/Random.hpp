@@ -41,6 +41,11 @@ public:
 
         return config;
     }
+
+    void describe() override {
+        std::cout << "Generates a random image by filling each pixel with a random color." << std::endl
+                  << "The configuration needs the width and height of the image." << std::endl;
+    }
 };
 
 #endif //AVOW_RANDOM_HPP

@@ -30,7 +30,8 @@ int main(int argc, char **argv) {
             ("i,input", "Input image", cxxopts::value<string>())
             ("o,output", "Output image (png,jpg,jpeg,bmp,tga,hdr)", cxxopts::value<string>())
             ("g,generate", "Generate a new config file", cxxopts::value<string>()->implicit_value("config.json"))
-            ("l,list", "List all available algorithms");
+            ("l,list", "List all available algorithms")
+            ("d,describe", "Describe an algorithm");
     options.parse_positional({"config"});
 
     // ====================
@@ -69,6 +70,14 @@ int main(int argc, char **argv) {
         for (auto &algorithm: algorithms) {
             cout << " - " << algorithm.first << endl;
         }
+        return 0;
+    }
+
+    if (result.count("describe")) {
+        string algo = enquirer::select("Select an algorithm", tools::keys(algorithms));
+        Algorithm *a = algorithms[algo]();
+        a->describe();
+        delete a;
         return 0;
     }
 

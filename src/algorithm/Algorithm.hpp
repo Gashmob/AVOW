@@ -40,6 +40,13 @@ public:
      */
     virtual Json::Value config() { throw; }
 
+    /**
+     * Method that print a description of the algorithm.
+     */
+    virtual void describe() {
+        std::cout << "No description available" << std::endl;
+    }
+
 protected:
     Algorithm() = default; // Private constructor to prevent instantiation
 };

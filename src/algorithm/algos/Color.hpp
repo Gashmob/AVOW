@@ -50,6 +50,12 @@ public:
 
         return config;
     }
+
+    void describe() override {
+        std::cout << "Generates an image with a single color." << std::endl
+                  << "The configuration needs the width and height of the image and the color (rgb)." << std::endl
+                  << "The color is a 3-tuple of unsigned 8-bit integers. There is no alpha channel." << std::endl;
+    }
 };
 
 
