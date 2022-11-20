@@ -17,3 +17,5 @@ Everyone is welcome to contribute to the project. If you want to contribute, ple
 - If you add new data structure, try to make it generic and add it in `src/utils/data.hpp`, so future contributors can
   use it.
 - Same for utility functions, add them in `src/utils/tools.hpp`.
+- If you add an external library, please add it in `README.md`. If it's a header only library, please add it in
+  the `src/include` folder.

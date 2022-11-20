@@ -10,11 +10,11 @@ add_executable(avow
         src/VERSION.h
         src/algorithm/Algorithm.hpp
         src/algorithm/algorithms.hpp
-        src/utils/cxxopts.hpp
-        src/utils/stb_image.h src/utils/stb_image_write.h
+        src/include/cxxopts.hpp
+        src/include/stb_image.h src/include/stb_image_write.h
+        src/include/enquirer.hpp
         src/utils/Image.hpp
         src/utils/tools.hpp src/utils/data.hpp
-        src/utils/enquirer.hpp
 
         src/algorithm/algos/Blank.hpp
         src/algorithm/algos/Color.hpp
@@ -23,6 +23,7 @@ add_executable(avow
 
 target_include_directories(avow PUBLIC
         src
+        src/include
         src/utils
         src/algorithm
         src/algorithm/algos
