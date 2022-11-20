@@ -151,7 +151,10 @@ int run_config(const string &config_file, const string &input, const string &out
         Json::Value algo_config = config["configs"][i];
 
         cout << color::bold << color::grey << "Running algorithm " << color::white << algo << color::reset << endl;
-        img = algorithms[algo]()->run(img, algo_config);
+
+        Algorithm *a = algorithms[algo]();
+        img = a->run(img, algo_config);
+        delete a;
     }
 
     // Generate output
