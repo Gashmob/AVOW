@@ -13,11 +13,12 @@ add_executable(avow
         src/utils/cxxopts.hpp
         src/utils/stb_image.h src/utils/stb_image_write.h
         src/utils/Image.hpp
-        src/utils/tools.hpp
+        src/utils/tools.hpp src/utils/data.hpp
         src/utils/enquirer.hpp
 
         src/algorithm/algos/Blank.hpp
         src/algorithm/algos/Color.hpp
+        src/algorithm/algos/Noise.hpp src/algorithm/algos/Noise/Perlin.hpp
         src/algorithm/algos/Random.hpp)
 
 target_include_directories(avow PUBLIC

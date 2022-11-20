@@ -15,6 +15,7 @@
 
 #include "Blank.hpp"
 #include "Color.hpp"
+#include "Noise.hpp"
 #include "Random.hpp"
 
 /**
@@ -25,8 +26,9 @@
  * Please sort alphabetically
  */
 static std::map<std::string, std::function<Algorithm *()>> algorithms = {
-        {"Blank", Blank::build},
-        {"Color", Color::build},
+        {"Blank",  Blank::build},
+        {"Color",  Color::build},
+        {"Noise",  Noise::build},
         {"Random", Random::build},
 };
 

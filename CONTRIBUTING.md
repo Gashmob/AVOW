@@ -14,3 +14,6 @@ Everyone is welcome to contribute to the project. If you want to contribute, ple
     - If you need several file, create a folder with the name of the algorithm in the same directory.
     - Then include your `.hpp` file in `src/algorithm/algorithms.hpp` with the other algorithms, please sort the
       includes. And add your algorithm in the `algorithms` list, same as usual, sort it by name.
+- If you add new data structure, try to make it generic and add it in `src/utils/data.hpp`, so future contributors can
+  use it.
+- Same for utility functions, add them in `src/utils/tools.hpp`.

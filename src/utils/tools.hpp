@@ -11,6 +11,9 @@
 #include <fstream>
 #include <vector>
 
+/**
+ * All functions tools used in the project
+ */
 namespace tools {
     /**
      * Check if a file exists.
