@@ -55,7 +55,8 @@ public:
      * @param channels Number of channels, 1 = grayscale, 2 = grayscale + alpha, 3 = RGB, 4 = RGBA
      * @param generator Generator function (x, y, channels) -> value, default generator set to white image
      */
-    Image(int width, int height, int channels, uint8_t *(*generator)(int, int, int) = _default_generator)
+    Image(int width, int height, int channels,
+          const std::function<uint8_t *(int, int, int)> &generator = _default_generator)
             : _width(width), _height(height), _channels(channels) {
         _data = new uint8_t[_width * _height * _channels];
 

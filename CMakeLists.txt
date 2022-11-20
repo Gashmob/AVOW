@@ -1,21 +1,32 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.10)
 project(AVOW)
 
 set(CMAKE_CXX_STANDARD 17)
 
-include_directories(
-        src
-        src/utils
-        src/algorithms
-)
+find_package(jsoncpp REQUIRED)
 
 add_executable(avow
         src/main.cpp
         src/VERSION.h
-        src/algorithms/Algorithm.hpp
-        src/algorithms/algorithms.hpp
+        src/algorithm/Algorithm.hpp
+        src/algorithm/algorithms.hpp
         src/utils/cxxopts.hpp
         src/utils/stb_image.h src/utils/stb_image_write.h
         src/utils/Image.hpp
         src/utils/tools.hpp
-        src/algorithms/blank/Blank.hpp)
+        src/utils/enquirer.hpp
+
+        src/algorithm/algos/Blank.hpp
+        src/algorithm/algos/Color.hpp
+        src/algorithm/algos/Random.hpp)
+
+target_include_directories(avow PUBLIC
+        src
+        src/utils
+        src/algorithm
+        src/algorithm/algos
+        )
+
+target_link_libraries(avow jsoncpp_lib)
+
+install(TARGETS avow DESTINATION bin)
