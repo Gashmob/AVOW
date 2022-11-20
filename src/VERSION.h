@@ -2,7 +2,7 @@
 #define VERSION_H
 
 #define VERSION_MAJOR 0
-#define VERSION_MINOR 2
+#define VERSION_MINOR 3
 #define VERSION_PATCH 0
 
 #define MAKE_VERSION(major, minor, patch) ((major) * 1000000 + (minor) * 1000 + (patch))
