@@ -2,6 +2,8 @@
 
 ## 0.2.0
 
+*2022-11-20*
+
 - `Blank` generate a blank image (transparent), not white
 - Add some algorithm :
     - `Random`
