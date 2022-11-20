@@ -2,12 +2,13 @@
 
 ## 0.2.0
 
-- `Blank` generate a blank image, not white
+- `Blank` generate a blank image (transparent), not white
 - Add some algorithm :
     - `Random`
     - `Color`
 - Executable use a config file instead of command line arguments
 - The config file can be generated with `-g [file]`
+- Can obtain list and description of algorithm with `-l` and `-d`
 
 ## 0.1.0
 
